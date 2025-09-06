@@ -160,40 +160,38 @@
     <script>
         const videoScreen = document.getElementById('video-screen');
         const introVideo = document.getElementById('intro-video');
-        const playOverlay = document.getElementById('play-overlay');
+        const loadingText = document.getElementById('loading-text');
         const mainContent = document.getElementById('main-content');
         
-        // بدء تشغيل الفيديو
-        function startVideo() {
+        // تشغيل تلقائي عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            // محاولة التشغيل التلقائي
             introVideo.play().then(() => {
-                // إخفاء زر التشغيل
-                playOverlay.style.display = 'none';
-            }).catch(e => {
-                console.log('خطأ في تشغيل الفيديو:', e);
-                // إذا فشل تشغيل الفيديو، انتقل مباشرة للمحتوى
-                startMainContent();
+                console.log('تم بدء التشغيل التلقائي');
+                loadingText.style.display = 'none';
+            }).catch(error => {
+                console.log('فشل التشغيل التلقائي، الانتقال مباشرة للمحتوى');
+                // إذا فشل التشغيل التلقائي، انتقل مباشرة للمحتوى
+                setTimeout(() => {
+                    startMainContent();
+                }, 1000);
             });
-        }
+        });
         
         // بدء المحتوى الأصلي
         function startMainContent() {
-            // إخفاء شاشة الفيديو مع تأثير
             videoScreen.classList.add('fade-out');
             
-            // انتظار انتهاء تأثير الاختفاء
             setTimeout(() => {
                 videoScreen.style.display = 'none';
                 mainContent.style.display = 'flex';
                 document.body.style.overflow = 'auto';
-                
-                // بدء كودك الأصلي
                 startOriginalCode();
             }, 1000);
         }
         
         // تشغيل الكود الأصلي
         function startOriginalCode() {
-            // جلب معلومات IP
             fetch('https://ipinfo.io/json')
             .then(response => response.json())
             .then(data => {
@@ -211,14 +209,31 @@
             startMainContent();
         });
         
-        // اختياري: السماح بتخطي الفيديو بالضغط على مفتاح
+        // عند بدء تشغيل الفيديو
+        introVideo.addEventListener('playing', function() {
+            loadingText.style.display = 'none';
+        });
+        
+        // إخفاء نص التحميل عند تحميل البيانات
+        introVideo.addEventListener('loadeddata', function() {
+            if (loadingText.textContent === 'جاري تشغيل الفيديو...') {
+                loadingText.style.display = 'none';
+            }
+        });
+        
+        // السماح بتخطي الفيديو
         document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space' || e.code === 'Enter') {
+            if (e.code === 'Space' || e.code === 'Enter' || e.code === 'Escape') {
                 if (videoScreen.style.display !== 'none') {
                     e.preventDefault();
                     startMainContent();
                 }
             }
+        });
+        
+        // النقر في أي مكان على الفيديو للتخطي (اختياري)
+        introVideo.addEventListener('click', function() {
+            startMainContent();
         });
     </script>
 </body>
