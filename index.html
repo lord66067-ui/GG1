@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>discord.gg/EHZTXduFm2</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+        
+        /* شاشة الفيديو */
+        .video-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* زر التشغيل */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-overlay:hover {
+            background: rgba(88, 101, 242, 0.8);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .play-button {
+            color: white;
+            font-size: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        /* المحتوى الأصلي */
+        .main-content {
+            display: none;
+            background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHdrdDF1cDd2b3JlMmNqc3M1aGFzN3dlaHUzOThuOG1iczNxMWR1ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ko7twHhomhk8E/giphy.gif') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .image-container img {
+            width: 750px; 
+            height: auto;
+            border: 2px solid #ffffff; 
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7); 
+        }
+        
+        .info {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #ffffff; 
+            text-shadow: 0px 0px 8px #ffffff, 0px 0px 15px #ffffff, 0px 0px 25px #ffffff; 
+            letter-spacing: 4.5px; 
+            white-space: pre-wrap;
+        }
+        
+        .text {
+            margin-top: 20px;
+            font-size: 3em; 
+            color: #ffffff; 
+            text-shadow: 0px 0px 8px #ffffff, 0px 0px 15px #ffffff, 0px 0px 25px #ffffff; 
+            letter-spacing: 4.5px; 
+        }
+        
+        /* تأثير الاختفاء */
+        .fade-out {
+            animation: fadeOut 1s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            to { 
+                opacity: 0; 
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- شاشة الفيديو -->
+    <div class="video-screen" id="video-screen">
+        <video class="intro-video" id="intro-video" muted>
+            <source src="intro-video.mp4" type="video/mp4">
+            <source src="intro-video.webm" type="video/webm">
+            متصفحك لا يدعم تشغيل الفيديو
+        </video>
+        
+        <!-- زر التشغيل -->
+        <div class="play-overlay" id="play-overlay" onclick="startVideo()">
+            <button class="play-button">▶</button>
+        </div>
+    </div>
+
+    <!-- المحتوى الأصلي (كودك) -->
+    <div class="main-content" id="main-content">
+        <div class="image-container">
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTNvcGR1aTgwOXo3bHV5eHFnNWxqYmZ1aWNyeHVkNnZ1bG0weXA3MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EoH4Wpu8suiNTLpI6j/giphy.gif" alt="Discord Image">
+        </div>
+        
+        <audio autoplay loop>
+            <source src="R34.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <div class="text">اما توردها مواريد الابطال ولا استرح وخل المراجل لاهلها</div>
+        <div class="info" id="ip-info">
+            <strong>IP: <span id="ip"></span></strong><br>
+            <span><strong>City:</strong> <span id="city"></span></span><br>
+            <span><strong>Region:</strong> <span id="region"></span></span><br>
+            <span><strong>Country:</strong> <span id="country"></span></span><br>
+            <span><strong>Location:</strong> <span id="loc"></span></span><br>
+            <span><strong>Organization:</strong> <span id="org"></span></span><br>
+            <span><strong>Timezone:</strong> <span id="timezone"></span></span>
+        </div>
+        <div class="text">GG : Hack : discord.gg/SARR</div>
+    </div>
+
+    <script>
+        const videoScreen = document.getElementById('video-screen');
+        const introVideo = document.getElementById('intro-video');
+        const playOverlay = document.getElementById('play-overlay');
+        const mainContent = document.getElementById('main-content');
+        
+        // بدء تشغيل الفيديو
+        function startVideo() {
+            introVideo.play().then(() => {
+                // إخفاء زر التشغيل
+                playOverlay.style.display = 'none';
+            }).catch(e => {
+                console.log('خطأ في تشغيل الفيديو:', e);
+                // إذا فشل تشغيل الفيديو، انتقل مباشرة للمحتوى
+                startMainContent();
+            });
+        }
+        
+        // بدء المحتوى الأصلي
+        function startMainContent() {
+            // إخفاء شاشة الفيديو مع تأثير
+            videoScreen.classList.add('fade-out');
+            
+            // انتظار انتهاء تأثير الاختفاء
+            setTimeout(() => {
+                videoScreen.style.display = 'none';
+                mainContent.style.display = 'flex';
+                document.body.style.overflow = 'auto';
+                
+                // بدء كودك الأصلي
+                startOriginalCode();
+            }, 1000);
+        }
+        
+        // تشغيل الكود الأصلي
+        function startOriginalCode() {
+            // جلب معلومات IP
+            fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+                delete data.readme;
+                document.getElementById('ip-info').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.log('خطأ في جلب معلومات IP:', error);
+                document.getElementById('ip-info').innerHTML = '<strong>خطأ في جلب المعلومات</strong>';
+            });
+        }
+        
+        // عند انتهاء الفيديو
+        introVideo.addEventListener('ended', function() {
+            startMainContent();
+        });
+        
+        // اختياري: السماح بتخطي الفيديو بالضغط على مفتاح
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                if (videoScreen.style.display !== 'none') {
+                    e.preventDefault();
+                    startMainContent();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
